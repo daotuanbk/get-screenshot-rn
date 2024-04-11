@@ -5,9 +5,10 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -24,7 +25,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+import {getScreenshot} from 'react-native-get-screenshot-module';
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
@@ -61,13 +62,39 @@ function App(): React.JSX.Element {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+  const [currentScreenshot, setCurrentScreenshot] = React.useState(null);
+  useEffect(() => {
+    try {
+      getNativeModules();
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  }, []);
 
+  const getNativeModules = async () => {
+    try {
+      const result = await getScreenshot();
+      if (result) {
+        setCurrentScreenshot(result);
+      }
+      console.log('Result:', result);
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+  console.log('currentScreenshot', currentScreenshot);
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
+      {currentScreenshot && (
+        <Image
+          source={{uri: currentScreenshot}}
+          style={{width: '100%', height: 400}}
+        />
+      )}
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>

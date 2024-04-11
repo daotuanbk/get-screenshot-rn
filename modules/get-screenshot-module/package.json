@@ -1,0 +1,9 @@
+{
+  "name": "react-native-get-screenshot-module",
+  "version": "0.0.0",
+  "description": "Get Screenshot",
+  "main": "src/index",
+  "author": " <> ()",
+  "license": "UNLICENSED",
+  "homepage": "#readme"
+}
